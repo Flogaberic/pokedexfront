@@ -1,0 +1,17 @@
+@if (pokemon){
+    <h1 class="flex items-center mb-6"><a [routerLink]="['/']" class="btn btn-circle btn-primary mr-2"><-</a> {{pokemon.name}}</h1>
+    <div class="flex items-center justify-center p-4 relative">
+      <img [src]="pokemon.default_variety.sprites?.artwork_url" [alt]="pokemon.name" class="w-full max-w-md">
+      <div class="absolute top-0 left-0 p-4 flex flex-col gap-2">
+        @for (type of pokemon.default_variety.types; track type.id){
+          <img [src]="type.sprite_url" [alt]="type.name" class="h-6">
+        }
+      </div>
+    </div>
+    <div class="flex items-center justify-center gap-3">
+      <img [src]="pokemon.default_variety.sprites?.front_url" alt="front sprite" class="h-24 w-24 p-1 bg-neutral rounded-lg">
+      <img [src]="pokemon.default_variety.sprites?.front_shiny_url" alt="front sprite shiny" class="h-24 w-24 p-1 bg-neutral rounded-lg">
+      <img [src]="pokemon.default_variety.sprites?.back_url" alt="back sprite" class="h-24 w-24 p-1 bg-neutral rounded-lg">
+      <img [src]="pokemon.default_variety.sprites?.back_shiny_url" alt="back sprite shiny" class="h-24 w-24 p-1 bg-neutral rounded-lg">
+    </div>
+}
