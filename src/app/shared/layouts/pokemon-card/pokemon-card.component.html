@@ -1,9 +1,13 @@
 <div class="card clickable">
     <div>
-        <p class="opacity-40">N°{{ pokemon.id }}</p>
+        <p class="opacity-40 text-right">#{{ pokemon.id }}</p>
     </div>
     <div class="flex flex-col justify-center items-center gap-3">
       <img [src]="pokemon.default_variety.sprites?.artwork_url" [alt]="pokemon.name" class="h-24">
       <p>{{ pokemon.name }}</p>
+      <div class="flex grid grid-cols-2 gap-4">
+        <p>{{ pokemon.default_variety.height }}</p>
+        <p>{{ pokemon.default_variety.weight }}</p>
+      </div>
     </div>
 </div>

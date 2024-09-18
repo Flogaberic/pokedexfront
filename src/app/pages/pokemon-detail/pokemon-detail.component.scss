@@ -1,0 +1,36 @@
+.stat-bar-container {
+    width: 25%;
+    background-color: #f3f3f3;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.stat-bar {
+    height: 20px;
+    border-radius: 5px;
+}
+
+
+.hp-bar {
+    background-color: #4CAF50;
+} 
+
+.atk-bar {
+    background-color: #f44336; 
+}
+
+.def-bar {
+    background-color: #00bcd4; 
+}
+
+.atk-spe-bar {
+    background-color: #ff9800; 
+}
+
+.def-spe-bar {
+    background-color: #9c27b0; 
+}
+
+.speed-bar {
+    background-color: #3f51b5; 
+}

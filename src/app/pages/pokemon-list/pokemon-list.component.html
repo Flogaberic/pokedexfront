@@ -1,4 +1,7 @@
-<section class="p-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+<div>
+    <img class="mx-auto" src="img/logo_pokémon_noir 1.png" alt="POKEMON" width="256px">
+</div>
+<section class="p-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-3 gap-4">
   @for (pokemon of pokemonList?.data; track pokemon.id){
     <a [routerLink]="['/pokemon/'+pokemon.id]">
         <app-pokemon-card [pokemon]="pokemon"></app-pokemon-card>
