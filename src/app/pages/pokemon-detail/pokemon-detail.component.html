@@ -1,25 +1,41 @@
 @if (pokemon){
-    <div class="bg-black">
-      <h1 class="flex items-center mb-6 text-white"><a [routerLink]="['/']" class="btn btn-circle btn-primary mr-2"><img src="img/prime_arrow-up.png" width="64px"></a> {{pokemon.name}} (#{{pokemon.id}})</h1>
-      <div class="flex items-center justify-center p-4 relative">
-        <img [src]="pokemon.default_variety.sprites?.artwork_url" [alt]="pokemon.name" width="350px" class="max-w-md">
-        <div class="absolute top-0 left-0 p-4 flex flex-col gap-2">
-          @for (type of pokemon.default_variety.types; track type.id){
-            <img [src]="type.sprite_url" [alt]="type.name" class="h-6">
-          }
+    <div class="rounded-b-3xl" [ngStyle]="{'background': getBackgroundStyle()}">
+      <h1 class="flex justify-between text-white">
+        <div class="flex items-center">
+            <a [routerLink]="['/']" class="btn btn-circle btn-primary mr-2"><img src="img/prime_arrow-up.png" width="64px"></a> 
+        </div>
+        <div>
+            <img class="cursor-pointer" src="img/lets-icons_sound-max-fill.png" width="40px" (click)="playSound()">
+        </div>
+      </h1>
+      <div class="flex justify-around">
+        <div class="basis-1/3 flex flex-col justify-center items-center text-white">
+          <p class="text-3xl uppercase">#{{pokemon.id}}</p><br>
+          <p class="text-5xl uppercase">{{pokemon.name}}</p>
+        </div>
+        <div class="basis-1/3 flex items-center justify-center p-4 relative">
+          <img [src]="pokemon.default_variety.sprites?.artwork_url" [alt]="pokemon.name" width="350px" class="max-w-md">
+        </div>
+        <div class="basis-1/3 flex justify-center items-center">
+          <img [src]="pokemon.default_variety.sprites?.front_shiny_url" alt="front sprite shiny" width="150px">
         </div>
       </div>
     </div>
     <br>
     <h3 class="text-center uppercase underline decoration-red-500 font-bold decoration-2">Informations</h3><br>
     <div class="flex items-center justify-center gap-3">
-      <div>
-        <b>{{ pokemon.default_variety.height }} m</b>
+      @for (type of pokemon.default_variety.types; track type.id){
+        <img [src]="type.sprite_url" [alt]="type.name" width="180px">
+      }
+    </div><br>
+    <div class="flex items-center justify-center gap-3">
+      <div class="flex flex-col justify-center items-center">
+        <b class="text-xl">{{ pokemon.default_variety.height }} m</b>
         <p>Taille</p>
       </div>
       <p>|</p>
-      <div>
-        <b>{{ pokemon.default_variety.weight }} kg</b>
+      <div class="flex flex-col justify-center items-center">
+        <b class="text-xl">{{ pokemon.default_variety.weight }} kg</b>
         <p>Poids</p>
       </div>
     </div><br>
@@ -52,7 +68,8 @@
       <div class="stat-bar-container">
         <div class="stat-bar speed-bar" [style.width.%]="(pokemon.default_variety.base_stat_speed / 255) * 100"></div>
       </div>
-    </div>
+    </div><br>
+    <h3 class="text-center uppercase underline decoration-red-500 font-bold decoration-2">Talent</h3><br>
     <div class="flex items-center justify-center gap-3">
       <img [src]="pokemon.default_variety.sprites?.front_url" alt="front sprite" class="h-24 w-24 p-1 bg-neutral rounded-lg">
       <img [src]="pokemon.default_variety.sprites?.front_shiny_url" alt="front sprite shiny" class="h-24 w-24 p-1 bg-neutral rounded-lg">

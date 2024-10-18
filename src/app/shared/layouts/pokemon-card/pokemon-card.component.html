@@ -5,9 +5,16 @@
     <div class="flex flex-col justify-center items-center gap-3">
       <img [src]="pokemon.default_variety.sprites?.artwork_url" [alt]="pokemon.name" class="h-24">
       <p>{{ pokemon.name }}</p>
-      <div class="flex grid grid-cols-2 gap-4">
-        <p>{{ pokemon.default_variety.height }}</p>
-        <p>{{ pokemon.default_variety.weight }}</p>
+      <div class="flex items-center justify-center gap-3">
+        <div>
+          <b>{{ pokemon.default_variety.height }} m</b>
+          <p>Taille</p>
+        </div>
+        <p>|</p>
+        <div>
+          <b>{{ pokemon.default_variety.weight }} kg</b>
+          <p>Poids</p>
+        </div>
       </div>
     </div>
 </div>

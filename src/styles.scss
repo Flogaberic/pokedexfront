@@ -4,10 +4,17 @@
 @tailwind components;
 @tailwind utilities;
 
+
+*{
+    @apply font-poppins
+}
+
 .card{
-    @apply bg-white shadow-md rounded-lg p-4 border border-zinc-400 transition-colors;
+    @apply shadow-md rounded-lg p-4 border border-zinc-400 transition-colors;
 
     &.clickable:hover{
         @apply border-zinc-700 bg-zinc-300;
     }
 }
+  
+  

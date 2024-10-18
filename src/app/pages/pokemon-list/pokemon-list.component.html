@@ -1,9 +1,32 @@
 <div>
-    <img class="mx-auto" src="img/logo_pokémon_noir 1.png" alt="POKEMON" width="256px">
+    <div class="flex justify-between">
+      <div>
+      </div>
+      <div>
+          <img class="mx-auto" src="img/logo_pokémon_noir 1.png" alt="POKEMON" width="256px">
+      </div>
+      <div>
+        <input type="checkbox" id="scales" name="scales" />
+      </div>
+    </div>
+    <div class="flex">
+      <div class="border-black border-solid border-2 w-5/12 h-12 rounded-md ml-4 flex">
+        <input type="search" id="site-search" name="q" class="w-4/5 h-11 rounded-md" />
+        <div class="w-1/5 h-11 rounded-r flex justify-center items-center bg-gradient-to-b from-[#287ECB] to-[#0A3154]"><img src="img/Vector.png"></div>
+      </div>
+      <div class="border-black border-solid border-2 w-2/5 h-12 rounded-md ml-4 flex">
+      </div>
+      <div class="border-black border-solid border-2 w-24 h-12 rounded-md ml-4 flex bg-gradient-to-b from-[#287ECB] to-[#0A3154] flex justify-center items-center">
+        <img src="img/ph_camera-fill.png">
+      </div>
+      <div class="border-black border-solid border-2 w-24 h-12 rounded-md ml-4 flex bg-gradient-to-b from-[#287ECB] to-[#0A3154] flex justify-center items-center">
+        <img src="img/Vector2.png">
+      </div>
+    </div>
 </div>
 <section class="p-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-3 gap-4">
   @for (pokemon of pokemonList?.data; track pokemon.id){
-    <a [routerLink]="['/pokemon/'+pokemon.id]">
+    <a [routerLink]="['/pokemon/'+pokemon.id]" [ngStyle]="{'background': getBackgroundStyle()}">
         <app-pokemon-card [pokemon]="pokemon"></app-pokemon-card>
     </a>
   }
