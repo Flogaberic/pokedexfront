@@ -2,6 +2,13 @@ import { Component } from '@angular/core';
 import { Pokemon } from "../../shared/interfaces/pokemon";
 import { ApiService } from "../../shared/services/api.service";
 import { ActivatedRoute } from "@angular/router";
+import { Router } from '@angular/router';
+import { PokemonEvolution } from "../../shared/interfaces/pokemon-evolution";
+import { Type } from "../../shared/interfaces/type";
+import { Ability } from "../../shared/interfaces/ability";
+import { PokemonVariety } from '../../shared/interfaces/pokemon-variety';
+
+
 
 @Component({
   selector: 'app-pokemon-detail',
@@ -11,80 +18,91 @@ import { ActivatedRoute } from "@angular/router";
 export class PokemonDetailComponent {
 
   pokemon!: Pokemon;
+  pokemonEvolutions!: PokemonEvolution;
+  abilities!: Ability[];
+  types!: Type[];
 
-  private readonly TYPE_NAMES: { [key: number]: string } = {
-    1: 'normal',
-    2: 'fighting',
-    3: 'flying',
-    4: 'poison',
-    5: 'ground',
-    6: 'rock',
-    7: 'bug',
-    8: 'ghost',
-    9: 'steel',
-    10: 'fire',
-    11: 'water',
-    12: 'grass',
-    13: 'electric',
-    14: 'psychic',
-    15: 'ice',
-    16: 'dragon',
-    17: 'dark',
-    18: 'fairy',
-    19: 'stellar'
-  };
-
-  private readonly TYPE_COLORS: { [key: string]: string } = {
-    normal: '#A8A77A',
+  private readonly TYPE_COLORS_TOP: { [key: string]: string } = {
+    normal: '#FFFCDF',
     fighting: '#C22E28',
     flying: '#A98FF3',
-    poison: '#A33EA1',
-    ground: '#E2BF65',
+    poison: '#B567CE',
+    ground: '#E0AE94',
     rock: '#B6A136',
-    bug: '#A6B91A',
+    bug: '#C3E67B',
     ghost: '#735797',
-    steel: '#B7B7CE',
-    fire: '#EE8130',
-    water: '#6390F0',
-    grass: '#7AC74C',
+    steel: '#8DB0BD',
+    fire: '#DC2800',
+    water: '#9FC3E9',
+    grass: '#CAF0C6',
     electric: '#F7D02C',
-    psychic: '#F95587',
-    ice: '#96D9D6',
-    dragon: '#6F35FC',
-    dark: '#705746',
+    psychic: '#FCB7BB',
+    ice: '#5090D6',
+    dragon: '#277ECB',
+    dark: '#5A5465',
     fairy: '#D685AD',
     stellar: '#E2E2E2' 
   };
 
-  getTypeNames(): string[] {
-    if (!this.pokemon || !this.pokemon.default_variety.types) {
-      return [];
-    }
+  private readonly TYPE_COLORS_BOTTOM: { [key: string]: string } = {
+      normal: '#F4D23C',
+      fighting: '#C22E2850',
+      flying: '#A98FF350',
+      poison: '#674C70',
+      ground: '#DA7D4C',
+      rock: '#B6A13650',
+      bug: '#91C12F',
+      ghost: '#735797',
+      steel: '#568293',
+      fire: '#FF9D55',
+      water: '#5090D6',
+      grass: '#63BC5A',
+      electric: '#F7D02C',
+      psychic: '#FA7179',
+      ice: '#5090D6',
+      dragon: '#093052',
+      dark: '#1F1C23',
+      fairy: '#D685AD',
+      stellar: '#E2E2E2' 
+  };
 
-    // Map les numéros de types aux noms des types
-    return this.pokemon.default_variety.types.map((type: any) => this.TYPE_NAMES[type.id]);
+  shadeColor(color: string, percent: number): string {
+      let R = parseInt(color.substring(1, 3), 16);
+      let G = parseInt(color.substring(3, 5), 16);
+      let B = parseInt(color.substring(5, 7), 16);
+      
+      R = Math.floor(R * (100 + percent) / 100);
+      G = Math.floor(G * (100 + percent) / 100);
+      B = Math.floor(B * (100 + percent) / 100);
+      
+      R = (R < 255) ? R : 255;
+      G = (G < 255) ? G : 255;
+      B = (B < 255) ? B : 255;
+      
+      const RR = (R.toString(16).length == 1) ? "0" + R.toString(16) : R.toString(16);
+      const GG = (G.toString(16).length == 1) ? "0" + G.toString(16) : G.toString(16);
+      const BB = (B.toString(16).length == 1) ? "0" + B.toString(16) : B.toString(16);
+      
+      return "#" + RR + GG + BB;
   }
 
   getBackgroundStyle(): string {
-    const types = this.getTypeNames();
+  if (this.pokemon && this.pokemon.default_variety && this.pokemon.default_variety.types) {
+      const types = this.pokemon.default_variety.types.map((type: any) => type.name.toLowerCase());
 
-    if (types.length === 1) {
-      // Un seul type, couleur unie
-      return this.TYPE_COLORS[types[0]];
-    } else if (types.length === 2) {
-      // Deux types, appliquer un dégradé
-      const color1 = this.TYPE_COLORS[types[0]];
-      const color2 = this.TYPE_COLORS[types[1]];
-      return `linear-gradient(to right, ${color1}, ${color2})`;
-    }
-    return '';
-  } 
+      const color1 = this.TYPE_COLORS_TOP[types[0]];
+      const color2 = this.TYPE_COLORS_BOTTOM[types[0]];
+      return `linear-gradient(to bottom, ${color1}, ${color2})`;
+  }
+  return '#FFFFFF';
+  }
 
 
 
   constructor(
     private apiService: ApiService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {
     // Récupération de l'identifiant du Pokémon dans l'URL
     this.route.params.subscribe(params => {
@@ -94,9 +112,29 @@ export class PokemonDetailComponent {
             .then((response: Pokemon) => {
               this.pokemon = response;
             });
+
+        this.apiService.requestApi(`/evolutions/${params['pokemon_id']}`)
+            .then((response: PokemonEvolution) => {
+              this.pokemonEvolutions = response;
+              console.log('Evolutions :', this.pokemonEvolutions);
+            });
+
+        this.apiService.requestApi(`/ability/${params['pokemon_id']}`)
+            .then((data: Ability[]) => {
+              this.abilities = data; // Assure-toi que c'est bien un tableau
+              console.log('Donnée API :', this.abilities);
+            });
+
+        this.apiService.requestApi(`/type/`)
+            .then((data: Type[]) => {
+              this.types = data; // Assure-toi que c'est bien un tableau
+              console.log('Types :', this.types);
+            });
+            
       }
     });
   }
+
 
   playSound() {
     if (this.pokemon && this.pokemon.default_variety.cry_url) {
@@ -109,5 +147,9 @@ export class PokemonDetailComponent {
     } else {
       console.error('Aucune URL de son trouvée pour ce Pokémon');
     }
+  }
+
+  redirectToHome(){
+    this.router.navigate(['/']);
   }
 }

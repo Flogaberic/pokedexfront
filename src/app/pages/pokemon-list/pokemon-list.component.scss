@@ -1,0 +1,14 @@
+.image-container {
+    width: 100px; /* Largeur de la partie visible */
+    height: auto; /* Ajustez si nécessaire */
+    overflow: hidden; /* Cache le reste de l'image */
+    align-items: center;
+}
+  
+.cropped-image {
+    width: auto; /* Assure que l'image s'adapte à son conteneur */
+    height: 70%;
+    object-fit: cover; /* Garde la qualité de l'image */
+    object-position: left; /* Focus sur la gauche de l'image */
+    border-radius: 20px;
+}

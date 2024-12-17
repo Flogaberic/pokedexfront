@@ -1,33 +1,38 @@
 <div>
     <div class="flex justify-between">
       <div>
+          <img class="mx-auto" [routerLink]="['/settings/']" src="img/Group 333.png" alt="user_picture" width="50px" class="ml-5 mt-4 cursor-pointer">
       </div>
       <div>
-          <img class="mx-auto" src="img/logo_pokémon_noir 1.png" alt="POKEMON" width="256px">
+          <img *ngIf="!isDarkMode" class="mx-auto" src="img/logo_pokémon_noir 1.png" alt="POKEMON" width="256px">
+          <img *ngIf="isDarkMode" class="mx-auto" src="img/logo_pokémon_blanc 1.png" alt="POKEMON" width="256px">
       </div>
       <div>
-        <input type="checkbox" id="scales" name="scales" />
+        <input (click)="toggleDarkMode()" type="checkbox" class="toggle mr-6 mt-4 bg-black" />
       </div>
     </div>
     <div class="flex">
-      <div class="border-black border-solid border-2 w-5/12 h-12 rounded-md ml-4 flex">
-        <input type="search" id="site-search" name="q" class="w-4/5 h-11 rounded-md" />
+      <div class="border-solid border-2 w-5/12 h-12 rounded-md ml-4 flex">
+        <input [(ngModel)]="searchQuery" placeholder="Rechercher un Pokémon" type="search" class="w-4/5 h-11 rounded" />
         <div class="w-1/5 h-11 rounded-r flex justify-center items-center bg-gradient-to-b from-[#287ECB] to-[#0A3154]"><img src="img/Vector.png"></div>
       </div>
-      <div class="border-black border-solid border-2 w-2/5 h-12 rounded-md ml-4 flex">
+      <div class="border-solid border-2 w-2/5 h-12 rounded-md ml-4 flex">
+        <div *ngFor="let type of types" class="ability-card text-center flex image-container">
+          <img [src]="type.sprite_url" [alt]="type.name" [title]="type.name" class="cropped-image cursor-pointer">
+        </div>
       </div>
-      <div class="border-black border-solid border-2 w-24 h-12 rounded-md ml-4 flex bg-gradient-to-b from-[#287ECB] to-[#0A3154] flex justify-center items-center">
+      <div class="border-solid border-2 w-24 h-12 rounded-md ml-4 flex bg-gradient-to-b from-[#287ECB] to-[#0A3154] flex justify-center items-center">
         <img src="img/ph_camera-fill.png">
       </div>
-      <div class="border-black border-solid border-2 w-24 h-12 rounded-md ml-4 flex bg-gradient-to-b from-[#287ECB] to-[#0A3154] flex justify-center items-center">
+      <div class="border-solid border-2 w-24 h-12 rounded-md ml-4 flex bg-gradient-to-b from-[#287ECB] to-[#0A3154] flex justify-center items-center">
         <img src="img/Vector2.png">
       </div>
     </div>
 </div>
-<section class="p-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-3 gap-4">
-  @for (pokemon of pokemonList?.data; track pokemon.id){
-    <a [routerLink]="['/pokemon/'+pokemon.id]" [ngStyle]="{'background': getBackgroundStyle()}">
-        <app-pokemon-card [pokemon]="pokemon"></app-pokemon-card>
+<section class="p-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4">
+  <ng-container *ngFor="let pokemon of filteredPokemonList(); trackBy: trackById">
+    <a [routerLink]="['/pokemon/' + pokemon.id]">
+      <app-pokemon-card [pokemon]="pokemon"></app-pokemon-card>
     </a>
-  }
+  </ng-container>
 </section>
